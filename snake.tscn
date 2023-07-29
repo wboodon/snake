@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://xavarq63temb"]
+
+[ext_resource type="Script" path="res://snake.gd" id="1_dvxj4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nyig1"]
+size = Vector2(2, 2)
+
+[node name="Snake" type="Area2D" groups=["snake"]]
+collision_mask = 0
+script = ExtResource("1_dvxj4")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
+[node name="Head" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Head"]
+shape = SubResource("RectangleShape2D_nyig1")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="area_entered" from="Head" to="." method="_on_head_area_entered"]

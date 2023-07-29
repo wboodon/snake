@@ -1,0 +1,84 @@
+[gd_scene load_steps=5 format=3 uid="uid://dds4dogcoxu6b"]
+
+[ext_resource type="PackedScene" uid="uid://dgedwwd46vwdo" path="res://grid.tscn" id="1_6xqtp"]
+[ext_resource type="Shader" path="res://crt.gdshader" id="1_ks5wy"]
+[ext_resource type="Texture2D" uid="uid://byorfv5i13tnh" path="res://title.png" id="2_gpwrh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0noop"]
+shader = ExtResource("1_ks5wy")
+shader_parameter/overlay = true
+shader_parameter/scanlines_opacity = 0.0
+shader_parameter/scanlines_width = 0.0
+shader_parameter/grille_opacity = 0.09
+shader_parameter/resolution = Vector2(640, 480)
+shader_parameter/pixelate = false
+shader_parameter/roll = true
+shader_parameter/roll_speed = 8.0
+shader_parameter/roll_size = 6.522
+shader_parameter/roll_variation = 4.783
+shader_parameter/distort_intensity = 0.0
+shader_parameter/noise_opacity = 0.146
+shader_parameter/noise_speed = 5.0
+shader_parameter/static_noise_intensity = 0.169
+shader_parameter/aberration = -0.013
+shader_parameter/brightness = 1.4
+shader_parameter/discolor = false
+shader_parameter/warp_amount = 0.094
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/vignette_opacity = 0.413
+
+[node name="GameGUI" type="Control"]
+material = SubResource("ShaderMaterial_0noop")
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -320.0
+offset_bottom = -240.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 240.0
+color = Color(0.105882, 0.164706, 0.0352941, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 2
+offset_right = 320.0
+offset_bottom = 240.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CenterContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="SubViewport" type="SubViewport" parent="CenterContainer/HBoxContainer/SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(192, 192)
+render_target_update_mode = 4
+
+[node name="Grid" parent="CenterContainer/HBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("1_6xqtp")]
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_gpwrh")
+stretch_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_top = 24
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+use_parent_material = true
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 240.0
+color = Color(1, 1, 1, 0.0588235)
