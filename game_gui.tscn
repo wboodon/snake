@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://dds4dogcoxu6b"]
+[gd_scene load_steps=8 format=3 uid="uid://dds4dogcoxu6b"]
 
 [ext_resource type="PackedScene" uid="uid://dgedwwd46vwdo" path="res://grid.tscn" id="1_6xqtp"]
 [ext_resource type="Shader" path="res://crt.gdshader" id="1_ks5wy"]
+[ext_resource type="Script" path="res://game_gui.gd" id="2_2m5if"]
 [ext_resource type="Texture2D" uid="uid://byorfv5i13tnh" path="res://title.png" id="2_gpwrh"]
-[ext_resource type="FontFile" uid="uid://dssj30d3bo2i" path="res://Early GameBoy.ttf" id="4_u0ypo"]
+[ext_resource type="FontFile" uid="uid://dh407sxqo5x3i" path="res://VCRosdNEUE.ttf" id="4_lplgt"]
+[ext_resource type="FontFile" uid="uid://bh6wa32yo0mj5" path="res://VCR_OSD_MONO.ttf" id="6_2xfrq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0noop"]
 shader = ExtResource("1_ks5wy")
@@ -30,6 +32,7 @@ shader_parameter/vignette_intensity = 0.4
 shader_parameter/vignette_opacity = 0.413
 
 [node name="GameGUI" type="Control"]
+process_mode = 3
 material = SubResource("ShaderMaterial_0noop")
 layout_mode = 3
 anchors_preset = 15
@@ -39,6 +42,7 @@ offset_right = -320.0
 offset_bottom = -240.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("2_2m5if")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 0
@@ -46,8 +50,17 @@ offset_right = 320.0
 offset_bottom = 240.0
 color = Color(0.105882, 0.164706, 0.0352941, 1)
 
+[node name="ColorRect3" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 304.0
+offset_bottom = 32.0
+color = Color(0.054902, 0.270588, 0.0431373, 1)
+
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 2
+offset_top = 24.0
 offset_right = 320.0
 offset_bottom = 240.0
 
@@ -56,6 +69,7 @@ layout_mode = 2
 theme_override_constants/separation = 6
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="CenterContainer/HBoxContainer"]
+process_mode = 1
 layout_mode = 2
 
 [node name="SubViewport" type="SubViewport" parent="CenterContainer/HBoxContainer/SubViewportContainer"]
@@ -64,35 +78,69 @@ handle_input_locally = false
 size = Vector2i(192, 192)
 render_target_update_mode = 4
 
-[node name="Grid" parent="CenterContainer/HBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("1_6xqtp")]
+[node name="Game" parent="CenterContainer/HBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("1_6xqtp")]
+unique_name_in_owner = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/HBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 0
 
 [node name="TextureRect" type="TextureRect" parent="CenterContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 texture = ExtResource("2_gpwrh")
 stretch_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CenterContainer/HBoxContainer/VBoxContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="CenterContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CenterContainer/HBoxContainer/VBoxContainer/CenterContainer"]
 layout_mode = 2
 theme_override_colors/default_color = Color(0.603922, 0.619608, 0.247059, 1)
-theme_override_fonts/normal_font = ExtResource("4_u0ypo")
+theme_override_fonts/normal_font = ExtResource("4_lplgt")
 theme_override_font_sizes/normal_font_size = 16
 bbcode_enabled = true
 text = "[center]SCORE
 00000
 
-High score
+
+HIGH SCORE
 00000[/center]"
 fit_content = true
+autowrap_mode = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 theme_override_constants/margin_top = 24
+
+[node name="PauseScreen" type="CenterContainer" parent="."]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 40.0
+offset_right = 208.0
+offset_bottom = 224.0
+
+[node name="ColorRect2" type="ColorRect" parent="PauseScreen"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+color = Color(0.105882, 0.164706, 0.0352941, 1)
+
+[node name="ColorRect" type="ColorRect" parent="PauseScreen"]
+custom_minimum_size = Vector2(88, 24)
+layout_mode = 2
+color = Color(0.286275, 0.419608, 0.133333, 1)
+
+[node name="PauseText" type="RichTextLabel" parent="PauseScreen"]
+clip_contents = false
+layout_mode = 2
+theme_override_colors/default_color = Color(0.105882, 0.164706, 0.0352941, 1)
+theme_override_fonts/normal_font = ExtResource("6_2xfrq")
+theme_override_font_sizes/normal_font_size = 21
+text = "PAUSED"
+fit_content = true
+autowrap_mode = 0
 
 [node name="ColorRect2" type="ColorRect" parent="."]
 use_parent_material = true

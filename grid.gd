@@ -35,6 +35,7 @@ func _ready():
 	
 	move_food()
 
+
 func move_food():
 	var new_x = randi_range(0, Global.GRID_WIDTH - 1)
 	var new_y = randi_range(0, Global.GRID_HEIGHT - 1)
