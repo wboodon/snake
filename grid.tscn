@@ -26,4 +26,5 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_fwigl")
 
+[connection signal="dead" from="Snake" to="." method="_on_snake_dead"]
 [connection signal="area_entered" from="Food" to="." method="_on_food_area_entered"]

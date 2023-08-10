@@ -4,6 +4,9 @@ extends Node2D
 @onready var snake : Area2D = $Snake
 @onready var border : Area2D = $Border
 
+signal score
+signal dead
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Background.size = Global.CELL_SIZE * Vector2(Global.GRID_WIDTH, Global.GRID_HEIGHT)
@@ -48,4 +51,9 @@ func move_food():
 
 
 func _on_food_area_entered(area):
+	emit_signal("score")
 	move_food()
+
+
+func _on_snake_dead():
+	emit_signal("dead")
