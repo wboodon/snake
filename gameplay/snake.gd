@@ -6,7 +6,7 @@ var tail : SnakeSquare
 @onready var head_hitbox = $Head
 enum {UP, DOWN, LEFT, RIGHT}
 var direction = UP
-var grow_next_move = false
+var grow_next_move = true
 var input_queue = []
 signal dead
 signal eat
@@ -34,7 +34,7 @@ func _unhandled_input(event):
 		input_queue.pop_front()
 
 func new_square(x : int, y : int):
-	tail = SnakeSquare.new(x, y, rectangle, tail)
+	tail = SnakeSquare.new(x, y, rectangle, tail, $Sprite2D.duplicate(), direction)
 	add_child(tail)
 
 func _on_timer_timeout():
@@ -67,11 +67,22 @@ func _on_timer_timeout():
 		tail.set_pos(new_x, new_y)
 	if tail != head:
 		head.prev = tail
+		head.next_direction = direction
+		head.update_sprite()
 		head.set_deferred("disabled", false)
+		
 		head = tail
+		
+		head.next_direction = -1
+		head.initial_direction = direction
+		head.update_sprite()
 		head.set_deferred("disabled", true)
+		
 		tail = tail.prev
+		tail.initial_direction = -1
+		tail.update_sprite()
 		head.prev = null
+		
 	head_hitbox.position = head.position
 
 
@@ -95,21 +106,60 @@ func is_spot_occupied(x : int, y : int) -> bool:
 class SnakeSquare extends CollisionShape2D:
 	var pos = {"x" : 0, "y" : 0}
 	var prev : SnakeSquare
+	var sprite : Sprite2D
+	var initial_direction = -1
+	var next_direction = -1
 		
-	func _init(x : int, y : int, rect_shape : RectangleShape2D, previous : SnakeSquare):
-		var color_rect = ColorRect.new()
-		color_rect.set_color(Global.DARK)
-		color_rect.set_size(Vector2(Global.CELL_SIZE, Global.CELL_SIZE))
-		color_rect.position = Vector2(-.5 * Global.CELL_SIZE, -.5 * Global.CELL_SIZE)
-		add_child(color_rect)
+	func _init( x : int, 
+				y : int, 
+				rect_shape : RectangleShape2D, 
+				previous : SnakeSquare, 
+				new_sprite : Sprite2D,
+				direction):
+		sprite = new_sprite
+		sprite.visible = true
+		add_child(sprite)
 		set_shape(rect_shape)
 		set_pos(x, y)
+		initial_direction = direction
 		prev = previous
-	
+		update_sprite()
+		
+
+
 	func set_pos(x : int, y : int):
 		pos.x = x
 		pos.y = y
 		position = Vector2((.5 + x) * Global.CELL_SIZE, (.5 + y) * Global.CELL_SIZE)
 	
 	
-
+	func update_sprite():
+		# reset sprite
+		sprite.rotation = 0.0
+		sprite.flip_h = false
+		sprite.flip_v = false
+		if next_direction == -1:
+			# head
+			sprite.frame = 0
+			var rot = 0.0
+			if initial_direction > DOWN: rot -= 0.5
+			if initial_direction % 2 == 1: rot += 1.0
+			sprite.rotation = rot * PI
+		elif initial_direction == -1:
+			# tail
+			sprite.frame = 3
+			var rot = 0.0
+			if next_direction > DOWN: rot -= 0.5
+			if next_direction % 2 == 1: rot += 1.0
+			sprite.rotation = rot * PI
+		elif next_direction == initial_direction:
+			# straight
+			sprite.frame = 2
+			sprite.rotation = (PI / 2.0) if initial_direction > DOWN else 0.0
+		else:
+			# bent
+			sprite.frame = 1
+			if initial_direction == DOWN or next_direction == UP:
+				sprite.flip_v = true
+			if initial_direction == RIGHT or next_direction == LEFT:
+				sprite.flip_h = true

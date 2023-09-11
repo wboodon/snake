@@ -1,0 +1,311 @@
+[gd_scene load_steps=13 format=3 uid="uid://dlfq34h176xw1"]
+
+[ext_resource type="Script" path="res://gui/game.gd" id="1_5itbe"]
+[ext_resource type="Shader" path="res://gui/palette_swap_2.gdshader" id="1_q1yve"]
+[ext_resource type="FontFile" uid="uid://dssj30d3bo2i" path="res://gui/Early GameBoy.ttf" id="3_twdjr"]
+[ext_resource type="Texture2D" uid="uid://cf3frhqocbe2r" path="res://gui/grid_border.png" id="4_wvgnk"]
+[ext_resource type="Shader" path="res://gui/start_screen/ripple.gdshader" id="5_1v56d"]
+[ext_resource type="FontFile" uid="uid://bh6wa32yo0mj5" path="res://gui/VCR_OSD_MONO.ttf" id="5_upgsp"]
+[ext_resource type="Texture2D" uid="uid://lfnbtt7f2qsv" path="res://gui/start_screen/melo_toni_presents.png" id="6_sad4r"]
+[ext_resource type="Theme" uid="uid://buqgb4lyf7xxf" path="res://gui/game_gui.tres" id="7_wo8da"]
+[ext_resource type="Texture2D" uid="uid://dxfsncr3hp6jm" path="res://gui/palettes/5.png" id="9_v7xn7"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yn6n4"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+texture = ExtResource("4_wvgnk")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8yx80"]
+shader = ExtResource("5_1v56d")
+shader_parameter/speed = 2.0
+shader_parameter/width = 0.25
+shader_parameter/height = 4.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o3f2d"]
+shader = ExtResource("1_q1yve")
+shader_parameter/baseline_alpha = 0.1
+shader_parameter/invert = false
+shader_parameter/palette = ExtResource("9_v7xn7")
+
+[node name="Game" type="Node2D"]
+process_mode = 3
+script = ExtResource("1_5itbe")
+
+[node name="InGameGUI" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Backdrop" type="ColorRect" parent="InGameGUI"]
+layout_mode = 0
+offset_right = 160.0
+offset_bottom = 144.0
+color = Color(0.333333, 0.333333, 0.333333, 1)
+
+[node name="ScoreText" type="RichTextLabel" parent="InGameGUI"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 1.0
+offset_top = 7.0
+offset_right = 64.0
+offset_bottom = 17.0
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("3_twdjr")
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+text = "[left]0[/left]"
+fit_content = true
+autowrap_mode = 0
+
+[node name="ScoreLabel" type="RichTextLabel" parent="InGameGUI"]
+layout_mode = 2
+offset_left = 1.0
+offset_top = -1.0
+offset_right = 64.0
+offset_bottom = 9.0
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("3_twdjr")
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+text = "[left]Score[/left]"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RecordText" type="RichTextLabel" parent="InGameGUI"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 80.0
+offset_top = 7.0
+offset_right = 161.0
+offset_bottom = 17.0
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("3_twdjr")
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+text = "[right]0[/right]"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RecordLabel" type="RichTextLabel" parent="InGameGUI"]
+layout_mode = 2
+offset_left = 80.0
+offset_top = -1.0
+offset_right = 161.0
+offset_bottom = 9.0
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("3_twdjr")
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+text = "[right]record[/right]"
+fit_content = true
+autowrap_mode = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="InGameGUI"]
+layout_mode = 2
+offset_top = 16.0
+offset_right = 160.0
+offset_bottom = 144.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxTexture_yn6n4")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="InGameGUI/PanelContainer"]
+process_mode = 1
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+
+[node name="GridViewport" type="SubViewport" parent="InGameGUI/PanelContainer/SubViewportContainer"]
+unique_name_in_owner = true
+handle_input_locally = false
+size = Vector2i(144, 112)
+render_target_update_mode = 4
+
+[node name="PauseMenu" type="Control" parent="."]
+unique_name_in_owner = true
+process_mode = 2
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 24.0
+offset_right = 152.0
+offset_bottom = 136.0
+theme = ExtResource("7_wo8da")
+
+[node name="Panel" type="Panel" parent="PauseMenu"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 8.0
+offset_right = 120.0
+offset_bottom = 104.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu"]
+offset_left = 32.0
+offset_top = 8.0
+offset_right = 112.0
+offset_bottom = 96.0
+
+[node name="PausedLabel" type="RichTextLabel" parent="PauseMenu/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_fonts/normal_font = ExtResource("5_upgsp")
+theme_override_font_sizes/normal_font_size = 21
+text = "PAUSED"
+fit_content = true
+autowrap_mode = 0
+
+[node name="ResumeButton" type="Button" parent="PauseMenu/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+text = "resume"
+
+[node name="PauseNewGameButton" type="Button" parent="PauseMenu/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+text = "new game"
+
+[node name="PauseSettingsButton" type="Button" parent="PauseMenu/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+text = "settings"
+
+[node name="PauseQuitButton" type="Button" parent="PauseMenu/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+text = "quit"
+
+[node name="GameOverMenu" type="Control" parent="."]
+unique_name_in_owner = true
+process_mode = 2
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 24.0
+offset_right = 152.0
+offset_bottom = 136.0
+theme = ExtResource("7_wo8da")
+
+[node name="Panel" type="Panel" parent="GameOverMenu"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 16.0
+offset_right = 136.0
+offset_bottom = 96.0
+
+[node name="GameOverLabel" type="RichTextLabel" parent="GameOverMenu"]
+layout_mode = 2
+offset_left = 16.0
+offset_top = 24.0
+offset_right = 128.0
+offset_bottom = 43.0
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_fonts/normal_font = ExtResource("5_upgsp")
+theme_override_font_sizes/normal_font_size = 21
+bbcode_enabled = true
+text = "[center]GAME OVER"
+fit_content = true
+autowrap_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOverMenu"]
+offset_left = 32.0
+offset_top = 64.0
+offset_right = 112.0
+offset_bottom = 88.0
+
+[node name="GameOverNewGameButton" type="Button" parent="GameOverMenu/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+text = "new game"
+
+[node name="GameOverQuitButton" type="Button" parent="GameOverMenu/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+text = "quit"
+
+[node name="StartMenu" type="Control" parent="."]
+unique_name_in_owner = true
+process_mode = 2
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect" type="ColorRect" parent="StartMenu"]
+layout_mode = 2
+offset_right = 160.0
+offset_bottom = 144.0
+color = Color(0, 0, 0, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="StartMenu"]
+layout_mode = 0
+offset_right = 160.0
+offset_bottom = 144.0
+
+[node name="TextureRect" type="TextureRect" parent="StartMenu"]
+material = SubResource("ShaderMaterial_8yx80")
+layout_mode = 0
+offset_right = 123.0
+offset_bottom = 15.0
+texture = ExtResource("6_sad4r")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StartMenu"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 96.0
+offset_right = 128.0
+offset_bottom = 144.0
+theme = ExtResource("7_wo8da")
+
+[node name="StartNewGameButton" type="Button" parent="StartMenu/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+text = "new game"
+
+[node name="StartSettingsButton" type="Button" parent="StartMenu/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+text = "settings"
+
+[node name="StartQuitButton" type="Button" parent="StartMenu/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+text = "quit"
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+copy_mode = 2
+
+[node name="PaletteSwapper" type="ColorRect" parent="BackBufferCopy"]
+material = SubResource("ShaderMaterial_o3f2d")
+offset_right = 160.0
+offset_bottom = 144.0
+color = Color(1, 1, 1, 0)

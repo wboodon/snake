@@ -1,0 +1,50 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://buqgb4lyf7xxf"]
+
+[ext_resource type="FontFile" uid="uid://dssj30d3bo2i" path="res://gui/Early GameBoy.ttf" id="1_ydk56"]
+[ext_resource type="Texture2D" uid="uid://dp2h5o5x7hujn" path="res://gui/button_focus.png" id="2_uaud8"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i1j8d"]
+texture = ExtResource("2_uaud8")
+texture_margin_left = 4.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_28hpe"]
+bg_color = Color(0.286275, 0.419608, 0.133333, 0)
+border_color = Color(0.8, 0.8, 0.8, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ybfmy"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_227t2"]
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 9.0
+bg_color = Color(0.286275, 0.419608, 0.133333, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.105882, 0.164706, 0.0352941, 1)
+anti_aliasing = false
+
+[resource]
+Button/colors/font_color = Color(0.670588, 0.670588, 0.670588, 1)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(0.333333, 0.333333, 0.333333, 1)
+Button/colors/font_pressed_color = Color(0.333333, 0.333333, 0.333333, 1)
+Button/font_sizes/font_size = 8
+Button/fonts/font = ExtResource("1_ydk56")
+Button/styles/focus = SubResource("StyleBoxTexture_i1j8d")
+Button/styles/normal = SubResource("StyleBoxFlat_28hpe")
+Button/styles/pressed = SubResource("StyleBoxFlat_28hpe")
+Panel/styles/panel = SubResource("StyleBoxFlat_ybfmy")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_227t2")

@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="snake"
+run/main_scene="res://gui/game.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -20,9 +21,10 @@ Global="*res://global.gd"
 
 [display]
 
-window/size/viewport_width=320
-window/size/viewport_height=240
+window/size/viewport_width=640
+window/size/viewport_height=576
 window/stretch/mode="viewport"
+window/stretch/scale=4.0
 
 [input]
 

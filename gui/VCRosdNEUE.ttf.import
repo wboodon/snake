@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://bh6wa32yo0mj5"
-path="res://.godot/imported/VCR_OSD_MONO.ttf-cb2969eac1ca008d5be3ed8f462f2452.fontdata"
+uid="uid://dh407sxqo5x3i"
+path="res://.godot/imported/VCRosdNEUE.ttf-d8046586a4f22ea6e8094d43ee044968.fontdata"
 
 [deps]
 
-source_file="res://VCR_OSD_MONO.ttf"
-dest_files=["res://.godot/imported/VCR_OSD_MONO.ttf-cb2969eac1ca008d5be3ed8f462f2452.fontdata"]
+source_file="res://gui/VCRosdNEUE.ttf"
+dest_files=["res://.godot/imported/VCRosdNEUE.ttf-d8046586a4f22ea6e8094d43ee044968.fontdata"]
 
 [params]
 
