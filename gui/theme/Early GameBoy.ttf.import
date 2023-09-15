@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://bh6wa32yo0mj5"
-path="res://.godot/imported/VCR_OSD_MONO.ttf-2b53550b33f929a9566c693a6f0e0181.fontdata"
+uid="uid://dssj30d3bo2i"
+path="res://.godot/imported/Early GameBoy.ttf-afbdaef707f5b2f0d5ec5e47862f0df8.fontdata"
 
 [deps]
 
-source_file="res://gui/VCR_OSD_MONO.ttf"
-dest_files=["res://.godot/imported/VCR_OSD_MONO.ttf-2b53550b33f929a9566c693a6f0e0181.fontdata"]
+source_file="res://gui/theme/Early GameBoy.ttf"
+dest_files=["res://.godot/imported/Early GameBoy.ttf-afbdaef707f5b2f0d5ec5e47862f0df8.fontdata"]
 
 [params]
 

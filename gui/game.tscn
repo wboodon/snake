@@ -1,25 +1,41 @@
-[gd_scene load_steps=13 format=3 uid="uid://dlfq34h176xw1"]
+[gd_scene load_steps=17 format=3 uid="uid://dlfq34h176xw1"]
 
 [ext_resource type="Script" path="res://gui/game.gd" id="1_5itbe"]
 [ext_resource type="Shader" path="res://gui/palette_swap_2.gdshader" id="1_q1yve"]
-[ext_resource type="FontFile" uid="uid://dssj30d3bo2i" path="res://gui/Early GameBoy.ttf" id="3_twdjr"]
-[ext_resource type="Texture2D" uid="uid://cf3frhqocbe2r" path="res://gui/grid_border.png" id="4_wvgnk"]
+[ext_resource type="FontFile" uid="uid://dssj30d3bo2i" path="res://gui/theme/Early GameBoy.ttf" id="2_sxpjs"]
+[ext_resource type="Texture2D" uid="uid://cf3frhqocbe2r" path="res://gui/theme/grid_border.png" id="3_sbjq2"]
+[ext_resource type="Theme" uid="uid://buqgb4lyf7xxf" path="res://gui/theme/game_gui.tres" id="4_fctqf"]
 [ext_resource type="Shader" path="res://gui/start_screen/ripple.gdshader" id="5_1v56d"]
-[ext_resource type="FontFile" uid="uid://bh6wa32yo0mj5" path="res://gui/VCR_OSD_MONO.ttf" id="5_upgsp"]
+[ext_resource type="FontFile" uid="uid://bh6wa32yo0mj5" path="res://gui/theme/VCR_OSD_MONO.ttf" id="5_sgn86"]
 [ext_resource type="Texture2D" uid="uid://lfnbtt7f2qsv" path="res://gui/start_screen/melo_toni_presents.png" id="6_sad4r"]
-[ext_resource type="Theme" uid="uid://buqgb4lyf7xxf" path="res://gui/game_gui.tres" id="7_wo8da"]
+[ext_resource type="Texture2D" uid="uid://djkvvo7gug04s" path="res://gui/theme/tex_button_normal.png" id="8_qedsq"]
+[ext_resource type="Texture2D" uid="uid://clnohryx8ktte" path="res://gui/theme/tex_button_disabled.png" id="9_fabpo"]
 [ext_resource type="Texture2D" uid="uid://dxfsncr3hp6jm" path="res://gui/palettes/5.png" id="9_v7xn7"]
+[ext_resource type="Texture2D" uid="uid://cvrqpukkprlb0" path="res://gui/theme/tex_button_focus.png" id="10_li0bs"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yn6n4"]
 content_margin_left = 8.0
 content_margin_top = 8.0
-texture = ExtResource("4_wvgnk")
+texture = ExtResource("3_sbjq2")
 texture_margin_left = 8.0
 texture_margin_top = 8.0
 texture_margin_right = 8.0
 texture_margin_bottom = 8.0
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vvj6u"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.333333, 0.333333, 0.333333, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+corner_detail = 1
+anti_aliasing = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8yx80"]
 shader = ExtResource("5_1v56d")
@@ -41,8 +57,8 @@ script = ExtResource("1_5itbe")
 unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 160.0
+offset_bottom = 144.0
 
 [node name="Backdrop" type="ColorRect" parent="InGameGUI"]
 layout_mode = 0
@@ -60,7 +76,7 @@ offset_bottom = 17.0
 size_flags_horizontal = 4
 size_flags_vertical = 6
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("3_twdjr")
+theme_override_fonts/normal_font = ExtResource("2_sxpjs")
 theme_override_font_sizes/normal_font_size = 8
 bbcode_enabled = true
 text = "[left]0[/left]"
@@ -76,7 +92,7 @@ offset_bottom = 9.0
 size_flags_horizontal = 4
 size_flags_vertical = 6
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("3_twdjr")
+theme_override_fonts/normal_font = ExtResource("2_sxpjs")
 theme_override_font_sizes/normal_font_size = 8
 bbcode_enabled = true
 text = "[left]Score[/left]"
@@ -93,7 +109,7 @@ offset_bottom = 17.0
 size_flags_horizontal = 4
 size_flags_vertical = 6
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("3_twdjr")
+theme_override_fonts/normal_font = ExtResource("2_sxpjs")
 theme_override_font_sizes/normal_font_size = 8
 bbcode_enabled = true
 text = "[right]0[/right]"
@@ -109,7 +125,7 @@ offset_bottom = 9.0
 size_flags_horizontal = 4
 size_flags_vertical = 6
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("3_twdjr")
+theme_override_fonts/normal_font = ExtResource("2_sxpjs")
 theme_override_font_sizes/normal_font_size = 8
 bbcode_enabled = true
 text = "[right]record[/right]"
@@ -137,6 +153,18 @@ handle_input_locally = false
 size = Vector2i(144, 112)
 render_target_update_mode = 4
 
+[node name="CountdownLabel" type="RichTextLabel" parent="InGameGUI/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_fonts/normal_font = ExtResource("5_sgn86")
+theme_override_font_sizes/normal_font_size = 21
+theme_override_styles/normal = SubResource("StyleBoxFlat_vvj6u")
+text = "3"
+fit_content = true
+autowrap_mode = 0
+
 [node name="PauseMenu" type="Control" parent="."]
 unique_name_in_owner = true
 process_mode = 2
@@ -147,7 +175,7 @@ offset_left = 8.0
 offset_top = 24.0
 offset_right = 152.0
 offset_bottom = 136.0
-theme = ExtResource("7_wo8da")
+theme = ExtResource("4_fctqf")
 
 [node name="Panel" type="Panel" parent="PauseMenu"]
 layout_mode = 0
@@ -157,6 +185,7 @@ offset_right = 120.0
 offset_bottom = 104.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu"]
+layout_mode = 0
 offset_left = 32.0
 offset_top = 8.0
 offset_right = 112.0
@@ -166,7 +195,7 @@ offset_bottom = 96.0
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6
-theme_override_fonts/normal_font = ExtResource("5_upgsp")
+theme_override_fonts/normal_font = ExtResource("5_sgn86")
 theme_override_font_sizes/normal_font_size = 21
 text = "PAUSED"
 fit_content = true
@@ -206,7 +235,7 @@ offset_left = 8.0
 offset_top = 24.0
 offset_right = 152.0
 offset_bottom = 136.0
-theme = ExtResource("7_wo8da")
+theme = ExtResource("4_fctqf")
 
 [node name="Panel" type="Panel" parent="GameOverMenu"]
 layout_mode = 0
@@ -223,7 +252,7 @@ offset_right = 128.0
 offset_bottom = 43.0
 size_flags_horizontal = 4
 size_flags_vertical = 6
-theme_override_fonts/normal_font = ExtResource("5_upgsp")
+theme_override_fonts/normal_font = ExtResource("5_sgn86")
 theme_override_font_sizes/normal_font_size = 21
 bbcode_enabled = true
 text = "[center]GAME OVER"
@@ -231,6 +260,7 @@ fit_content = true
 autowrap_mode = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="GameOverMenu"]
+layout_mode = 0
 offset_left = 32.0
 offset_top = 64.0
 offset_right = 112.0
@@ -251,7 +281,6 @@ text = "quit"
 [node name="StartMenu" type="Control" parent="."]
 unique_name_in_owner = true
 process_mode = 2
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -281,7 +310,7 @@ offset_left = 32.0
 offset_top = 96.0
 offset_right = 128.0
 offset_bottom = 144.0
-theme = ExtResource("7_wo8da")
+theme = ExtResource("4_fctqf")
 
 [node name="StartNewGameButton" type="Button" parent="StartMenu/VBoxContainer"]
 unique_name_in_owner = true
@@ -301,11 +330,201 @@ layout_mode = 2
 size_flags_vertical = 6
 text = "quit"
 
+[node name="SettingsMenu" type="Control" parent="."]
+unique_name_in_owner = true
+process_mode = 2
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 160.0
+offset_bottom = 144.0
+theme = ExtResource("4_fctqf")
+
+[node name="Panel" type="Panel" parent="SettingsMenu"]
+layout_mode = 0
+offset_right = 160.0
+offset_bottom = 144.0
+
+[node name="GridContainer" type="GridContainer" parent="SettingsMenu"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 152.0
+offset_bottom = 136.0
+columns = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="SettingsMenu/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+text = "palette"
+fit_content = true
+autowrap_mode = 0
+
+[node name="PaletteAdjuster" type="HBoxContainer" parent="SettingsMenu/GridContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="PaletteDecreaseButton" type="TextureButton" parent="SettingsMenu/GridContainer/PaletteAdjuster"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_right = NodePath("../PaletteIncreaseButton")
+button_mask = 0
+texture_normal = ExtResource("8_qedsq")
+texture_pressed = ExtResource("8_qedsq")
+texture_disabled = ExtResource("9_fabpo")
+texture_focused = ExtResource("10_li0bs")
+flip_h = true
+
+[node name="PaletteNumberLabel" type="RichTextLabel" parent="SettingsMenu/GridContainer/PaletteAdjuster"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+bbcode_enabled = true
+text = "00"
+fit_content = true
+autowrap_mode = 0
+
+[node name="PaletteIncreaseButton" type="TextureButton" parent="SettingsMenu/GridContainer/PaletteAdjuster"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../PaletteDecreaseButton")
+texture_normal = ExtResource("8_qedsq")
+texture_pressed = ExtResource("8_qedsq")
+texture_disabled = ExtResource("9_fabpo")
+texture_focused = ExtResource("10_li0bs")
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="SettingsMenu/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+text = "invert colors"
+fit_content = true
+autowrap_mode = 0
+
+[node name="InvertCheckBox" type="CheckBox" parent="SettingsMenu/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="SettingsMenu/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+text = "music vol"
+fit_content = true
+autowrap_mode = 0
+
+[node name="MusicAduster" type="HBoxContainer" parent="SettingsMenu/GridContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="MusicDecreaseButton" type="TextureButton" parent="SettingsMenu/GridContainer/MusicAduster"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_right = NodePath("../MusicIncreaseButton")
+button_mask = 0
+texture_normal = ExtResource("8_qedsq")
+texture_pressed = ExtResource("8_qedsq")
+texture_disabled = ExtResource("9_fabpo")
+texture_focused = ExtResource("10_li0bs")
+flip_h = true
+
+[node name="MusicNumberLabel" type="RichTextLabel" parent="SettingsMenu/GridContainer/MusicAduster"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+bbcode_enabled = true
+text = "10"
+fit_content = true
+autowrap_mode = 0
+
+[node name="MusicIncreaseButton" type="TextureButton" parent="SettingsMenu/GridContainer/MusicAduster"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../MusicDecreaseButton")
+texture_normal = ExtResource("8_qedsq")
+texture_pressed = ExtResource("8_qedsq")
+texture_disabled = ExtResource("9_fabpo")
+texture_focused = ExtResource("10_li0bs")
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="SettingsMenu/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+text = "sfx vol"
+fit_content = true
+autowrap_mode = 0
+
+[node name="SFXAdjuster" type="HBoxContainer" parent="SettingsMenu/GridContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="SFXDecreaseButton" type="TextureButton" parent="SettingsMenu/GridContainer/SFXAdjuster"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_right = NodePath("../SFXIncreaseButton")
+button_mask = 0
+texture_normal = ExtResource("8_qedsq")
+texture_pressed = ExtResource("8_qedsq")
+texture_disabled = ExtResource("9_fabpo")
+texture_focused = ExtResource("10_li0bs")
+flip_h = true
+
+[node name="SFXNumberLabel" type="RichTextLabel" parent="SettingsMenu/GridContainer/SFXAdjuster"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+bbcode_enabled = true
+text = "10"
+fit_content = true
+autowrap_mode = 0
+
+[node name="SFXIncreaseButton" type="TextureButton" parent="SettingsMenu/GridContainer/SFXAdjuster"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../SFXDecreaseButton")
+texture_normal = ExtResource("8_qedsq")
+texture_pressed = ExtResource("8_qedsq")
+texture_disabled = ExtResource("9_fabpo")
+texture_focused = ExtResource("10_li0bs")
+
+[node name="Control" type="Control" parent="SettingsMenu/GridContainer"]
+layout_mode = 2
+
+[node name="ExitSettingsButton" type="Button" parent="SettingsMenu/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = " exit"
+
 [node name="BackBufferCopy" type="BackBufferCopy" parent="."]
 copy_mode = 2
 
 [node name="PaletteSwapper" type="ColorRect" parent="BackBufferCopy"]
+unique_name_in_owner = true
 material = SubResource("ShaderMaterial_o3f2d")
 offset_right = 160.0
 offset_bottom = 144.0
 color = Color(1, 1, 1, 0)
+
+[connection signal="pressed" from="SettingsMenu/GridContainer/PaletteAdjuster/PaletteDecreaseButton" to="." method="_on_palette_decrease_button_pressed"]
+[connection signal="pressed" from="SettingsMenu/GridContainer/PaletteAdjuster/PaletteIncreaseButton" to="." method="_on_palette_increase_button_pressed"]
+[connection signal="toggled" from="SettingsMenu/GridContainer/InvertCheckBox" to="." method="_on_check_box_toggled"]
+[connection signal="pressed" from="SettingsMenu/GridContainer/MusicAduster/MusicDecreaseButton" to="." method="_on_music_decrease_button_pressed"]
+[connection signal="pressed" from="SettingsMenu/GridContainer/MusicAduster/MusicIncreaseButton" to="." method="_on_music_increase_button_pressed"]
+[connection signal="pressed" from="SettingsMenu/GridContainer/SFXAdjuster/SFXDecreaseButton" to="." method="_on_sfx_decrease_button_pressed"]
+[connection signal="pressed" from="SettingsMenu/GridContainer/SFXAdjuster/SFXIncreaseButton" to="." method="_on_sfx_increase_button_pressed"]
+[connection signal="pressed" from="SettingsMenu/GridContainer/ExitSettingsButton" to="." method="close_settings_menu"]

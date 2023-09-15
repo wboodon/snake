@@ -1,11 +1,11 @@
 [gd_scene load_steps=8 format=3 uid="uid://dds4dogcoxu6b"]
 
 [ext_resource type="Material" uid="uid://cb821pwtv3vou" path="res://gui/crt_shader.tres" id="1_i8dcl"]
-[ext_resource type="FontFile" uid="uid://dh407sxqo5x3i" path="res://gui/VCRosdNEUE.ttf" id="2_7dmww"]
-[ext_resource type="Theme" uid="uid://buqgb4lyf7xxf" path="res://gui/game_gui.tres" id="2_epsi2"]
+[ext_resource type="FontFile" uid="uid://dh407sxqo5x3i" path="res://gui/theme/VCRosdNEUE.ttf" id="2_7dmww"]
+[ext_resource type="Theme" uid="uid://buqgb4lyf7xxf" path="res://gui/theme/game_gui.tres" id="2_j7p4g"]
 [ext_resource type="Script" path="res://gui/game_gui.gd" id="4_l6xe6"]
 [ext_resource type="Texture2D" uid="uid://byorfv5i13tnh" path="res://gui/title.png" id="5_q8wjm"]
-[ext_resource type="FontFile" uid="uid://bh6wa32yo0mj5" path="res://gui/VCR_OSD_MONO.ttf" id="6_agor5"]
+[ext_resource type="FontFile" uid="uid://bh6wa32yo0mj5" path="res://gui/theme/VCR_OSD_MONO.ttf" id="6_agor5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g8rgk"]
 content_margin_left = 12.0
@@ -31,7 +31,7 @@ offset_right = -480.0
 offset_bottom = -432.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("2_epsi2")
+theme = ExtResource("2_j7p4g")
 script = ExtResource("4_l6xe6")
 
 [node name="ColorRect" type="ColorRect" parent="."]
