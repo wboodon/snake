@@ -1,28 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://by8mbw6ktpor4"]
+[gd_scene load_steps=11 format=3 uid="uid://by8mbw6ktpor4"]
 
 [ext_resource type="Script" path="res://gui/start_screen/animated_snake.gd" id="1_3v33i"]
 
 [sub_resource type="Curve2D" id="Curve2D_pk0kf"]
 _data = {
-"points": PackedVector2Array(6.25701, -0.0127931, -6.25701, 0.0127931, -70, 9, -15.031, -0.210224, 15.031, 0.210224, -50, 22, -16.1873, -0.105111, 16.1873, 0.105111, -26, 7, -17.2429, -0.226948, 17.2429, 0.226948, 0, 24, 11.868, -0.0928539, -11.868, 0.0928539, 0, 0, -12.3361, -0.0167234, 12.3361, 0.0167234, 0, -24, -0.900549, -7.98604, 0.900549, 7.98604, 17, -10)
+"points": PackedVector2Array(6.25701, -0.0127931, -6.25701, 0.0127931, -70, 9, -15.031, -0.210224, 15.031, 0.210224, -50, 22, -16.1873, -0.105111, 16.1873, 0.105111, -26, 7, -17.2429, -0.226948, 17.2429, 0.226948, 0, 24, 11.868, -0.0928539, -11.868, 0.0928539, 0, 0, -12.3361, -0.0167234, 12.3361, 0.0167234, 0, -24, -0.900549, -7.98604, 7.57475, -0.857274, 17, -10)
 }
 point_count = 7
-
-[sub_resource type="Animation" id="Animation_asx7q"]
-resource_name = "slither"
-length = 3.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:distance")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.0, 1.0]
-}
 
 [sub_resource type="Animation" id="Animation_dvqgh"]
 length = 0.001
@@ -93,6 +77,22 @@ tracks/1/keys = {
 "values": [Vector2(0, -8), Vector2(8, -6), Vector2(0, -8), Vector2(-8, -6)]
 }
 
+[sub_resource type="Animation" id="Animation_asx7q"]
+resource_name = "slither"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:distance")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_36uum"]
 _data = {
 "RESET": SubResource("Animation_dvqgh"),
@@ -105,6 +105,43 @@ _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, -8, -8, 6.05546, 0, 16)
 }
 point_count = 2
+
+[sub_resource type="Animation" id="Animation_84r8q"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Path2D:curve:point_6/in")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-0.900549, -7.98604)]
+}
+
+[sub_resource type="Animation" id="Animation_5015t"]
+resource_name = "wriggle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Path2D:curve:point_6/in")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-0.900549, -7.98604)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pgfvf"]
+_data = {
+"RESET": SubResource("Animation_84r8q"),
+"wriggle": SubResource("Animation_5015t")
+}
 
 [node name="AnimatedSnake" type="Node2D"]
 position = Vector2(36, 64)
@@ -120,3 +157,9 @@ libraries = {
 
 [node name="TonguePath" type="Path2D" parent="."]
 curve = SubResource("Curve2D_ub28l")
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
+autoplay = "wriggle"
+libraries = {
+"": SubResource("AnimationLibrary_pgfvf")
+}
