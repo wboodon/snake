@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dlfq34h176xw1"]
+[gd_scene load_steps=22 format=3 uid="uid://dlfq34h176xw1"]
 
 [ext_resource type="Script" path="res://gui/game.gd" id="1_5itbe"]
 [ext_resource type="Shader" path="res://gui/palette_swap_2.gdshader" id="1_q1yve"]
@@ -7,9 +7,11 @@
 [ext_resource type="Theme" uid="uid://buqgb4lyf7xxf" path="res://gui/theme/game_gui.tres" id="4_fctqf"]
 [ext_resource type="Shader" path="res://gui/start_screen/ripple.gdshader" id="5_1v56d"]
 [ext_resource type="FontFile" uid="uid://bh6wa32yo0mj5" path="res://gui/theme/VCR_OSD_MONO.ttf" id="5_sgn86"]
+[ext_resource type="PackedScene" uid="uid://by8mbw6ktpor4" path="res://gui/start_screen/animated_snake.tscn" id="6_fxmbh"]
 [ext_resource type="Texture2D" uid="uid://lfnbtt7f2qsv" path="res://gui/start_screen/melo_toni_presents.png" id="6_sad4r"]
 [ext_resource type="Texture2D" uid="uid://djkvvo7gug04s" path="res://gui/theme/tex_button_normal.png" id="8_qedsq"]
 [ext_resource type="Texture2D" uid="uid://clnohryx8ktte" path="res://gui/theme/tex_button_disabled.png" id="9_fabpo"]
+[ext_resource type="Texture2D" uid="uid://bhylsa4n1ib4q" path="res://gui/start_screen/nake.png" id="9_kaalf"]
 [ext_resource type="Texture2D" uid="uid://dxfsncr3hp6jm" path="res://gui/palettes/5.png" id="9_v7xn7"]
 [ext_resource type="Texture2D" uid="uid://cvrqpukkprlb0" path="res://gui/theme/tex_button_focus.png" id="10_li0bs"]
 
@@ -42,6 +44,44 @@ shader = ExtResource("5_1v56d")
 shader_parameter/speed = 2.0
 shader_parameter/width = 0.25
 shader_parameter/height = 4.0
+
+[sub_resource type="Animation" id="Animation_mbweu"]
+resource_name = "fade_in"
+length = 3.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FadeIn:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2, 3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0.580392), Color(0, 0, 0, 0.580392), Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_j0had"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FadeIn:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hu3po"]
+_data = {
+"RESET": SubResource("Animation_j0had"),
+"fade_in": SubResource("Animation_mbweu")
+}
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_o3f2d"]
 shader = ExtResource("1_q1yve")
@@ -292,6 +332,14 @@ offset_right = 160.0
 offset_bottom = 144.0
 color = Color(0, 0, 0, 1)
 
+[node name="TextureRect2" type="TextureRect" parent="StartMenu"]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 44.0
+offset_right = 128.0
+offset_bottom = 84.0
+texture = ExtResource("9_kaalf")
+
 [node name="CenterContainer" type="CenterContainer" parent="StartMenu"]
 layout_mode = 0
 offset_right = 160.0
@@ -329,6 +377,22 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 6
 text = "quit"
+
+[node name="AnimatedSnake" parent="StartMenu" instance=ExtResource("6_fxmbh")]
+position = Vector2(48, 56)
+
+[node name="FadeIn" type="ColorRect" parent="StartMenu"]
+layout_mode = 0
+offset_top = 15.0
+offset_right = 160.0
+offset_bottom = 98.0
+color = Color(0, 0, 0, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="StartMenu"]
+autoplay = "fade_in"
+libraries = {
+"": SubResource("AnimationLibrary_hu3po")
+}
 
 [node name="SettingsMenu" type="Control" parent="."]
 unique_name_in_owner = true
