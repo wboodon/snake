@@ -4,13 +4,14 @@ extends Node2D
 
 enum {SLITHER, IDLE}
 var state = SLITHER
-@onready var points : PackedVector2Array = $Path2D.curve.tessellate_even_length(5, 2)
+@onready var points : PackedVector2Array
 var body_color = Global.LIGHTEST
+var body_percentage : float
 
 func _draw():
 	
 	var length = points.size()
-	var tail_point = int(length * (distance - 0.75))
+	var tail_point = int(length * (distance - body_percentage))
 	var head_point = int(length * distance)
 	
 	# draw shadow
@@ -23,7 +24,7 @@ func _draw():
 	
 	# draw body
 	draw_set_transform(Vector2.ZERO)
-	for i in range(length * .75):
+	for i in range(length * body_percentage):
 		if i + tail_point < 0 : continue
 		var width = clamp(ceil(15.0 * (1-cos(i * 2 * PI / length))), 1.0, 5.0)
 		draw_circle(points[i + tail_point], width, body_color)
@@ -72,7 +73,8 @@ func _draw():
 		draw_line(Vector2(5, 7), Vector2(1, 7), Global.DARKEST, 2.0)
 		draw_arc(Vector2(3, 7), 3.0, -PI/3, -PI, 6, Global.LIGHTEST, 2.0)
 	else:
-		draw_set_transform(points[head_point -2], (points[head_point-1] - points[head_point-2]).angle())
+		#draw_set_transform(points[head_point -2], (points[head_point-1] - points[head_point-2]).angle())
+		draw_set_transform(points[head_point -2], PI)
 		draw_circle(Vector2(0,0), 9.0, body_color)
 		draw_circle(Vector2(7,0), 6.0, body_color)
 		#draw_circle(Vector2(3,-7), 3.0, Global.LIGHT)
@@ -91,10 +93,14 @@ func _process(_delta):
 
 
 func animate():
+	body_percentage = .35
+	points = $SlitherPath.curve.tessellate_even_length(5, 2)
 	state = SLITHER
 	body_color = Global.LIGHTEST
 	$AnimationPlayer.play("slither")
 	await $AnimationPlayer.animation_finished
+	body_percentage = .75
+	points = $IdlePath.curve.tessellate_even_length(5, 2)
 	body_color = Global.LIGHT
 	state = IDLE
 	$AnimationPlayer.play("idle")

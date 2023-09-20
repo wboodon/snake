@@ -1,12 +1,18 @@
-[gd_scene load_steps=8 format=3 uid="uid://by8mbw6ktpor4"]
+[gd_scene load_steps=9 format=3 uid="uid://by8mbw6ktpor4"]
 
 [ext_resource type="Script" path="res://gui/start_screen/animated_snake.gd" id="1_3v33i"]
 
 [sub_resource type="Curve2D" id="Curve2D_pk0kf"]
 _data = {
-"points": PackedVector2Array(6.25701, -0.0127931, -6.25701, 0.0127931, -70, 9, -15.031, -0.210224, 15.031, 0.210224, -50, 22, -16.1873, -0.105111, 16.1873, 0.105111, -26, 7, -17.2429, -0.226948, 17.2429, 0.226948, -2, 24, 11.868, -0.0928539, -11.868, 0.0928539, 0, 0, -12.3361, -0.0167234, 12.3361, 0.0167234, 2, -24, -0.900549, -7.98604, 7.57475, -0.857274, 19, -10)
+"points": PackedVector2Array(6.25701, -0.0127931, -6.25701, 0.0127931, -70, 9, -15.031, -0.210224, 15.031, 0.210224, -50, 22, -16.1873, -0.105111, 16.1873, 0.105111, -26, 7, -17.2429, -0.226948, 17.2429, 0.226948, -2, 24, 11.868, -0.0928539, -11.868, 0.0928539, 0, 0, -12.3361, -0.0167234, 12.3361, 0.0167234, 2, -24, -0.900549, -7.98604, 0.900549, 7.98604, 19, -10)
 }
 point_count = 7
+
+[sub_resource type="Curve2D" id="Curve2D_dhpwg"]
+_data = {
+"points": PackedVector2Array(15.749, 0.15749, -15.749, -0.15749, 144, -16, 15.8134, 0, -15.8134, 0, 72, 8, 15.5915, 0.47247, -15.5915, -0.47247, 8, -8, 16.2215, -0.15749, -16.2215, 0.15749, -40, 8, 16.2589, 0.445449, -16.2589, -0.445449, -80, -8, 16.2589, -0.445449, -16.2589, 0.445449, -136, 8)
+}
+point_count = 6
 
 [sub_resource type="Animation" id="Animation_dvqgh"]
 length = 0.001
@@ -87,7 +93,7 @@ tracks/0/path = NodePath(".:distance")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 2),
+"times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0.0, 1.0]
@@ -109,8 +115,12 @@ point_count = 2
 [node name="AnimatedSnake" type="Node2D"]
 script = ExtResource("1_3v33i")
 
-[node name="Path2D" type="Path2D" parent="."]
+[node name="IdlePath" type="Path2D" parent="."]
+visible = false
 curve = SubResource("Curve2D_pk0kf")
+
+[node name="SlitherPath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_dhpwg")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -118,4 +128,5 @@ libraries = {
 }
 
 [node name="TonguePath" type="Path2D" parent="."]
+visible = false
 curve = SubResource("Curve2D_ub28l")
