@@ -4,8 +4,12 @@ extends Node2D
 @onready var snake : Area2D = $Snake
 @onready var border : Area2D = $Border
 
+var all_positions : Array
+var spawn_positions : PackedVector2Array
+
 signal score
 signal dead
+signal win
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -36,18 +40,28 @@ func _ready():
 	right_border.position = Global.CELL_SIZE * Vector2(.5 + Global.GRID_WIDTH, Global.GRID_HEIGHT / 2.0)
 	border.add_child(right_border)
 	
+	all_positions = []
+	for i in range(0, Global.GRID_WIDTH):
+		for j in range(0, Global.GRID_HEIGHT):
+			all_positions.push_back(Vector2(i, j))
+	
 	move_food()
 
 
 func move_food():
-	var new_x = randi_range(0, Global.GRID_WIDTH - 1)
-	var new_y = randi_range(0, Global.GRID_HEIGHT - 1)
+	# go through the remaining spawn positions, then generate them again and 
+	# loop one more time
+	for i in range(2):
+		while len(spawn_positions) > 0:
+			var new_pos : Vector2 = spawn_positions[-1]
+			spawn_positions.remove_at(len(spawn_positions)-1)
+			if not snake.is_spot_occupied(new_pos.x, new_pos.y):
+				food.position = Global.CELL_SIZE * (new_pos + Vector2(.5, .5))
+				return
+		all_positions.shuffle()
+		spawn_positions = PackedVector2Array(all_positions)
 	
-	while snake.is_spot_occupied(new_x, new_y):
-		new_x = randi_range(0, Global.GRID_WIDTH - 1)
-		new_y = randi_range(0, Global.GRID_HEIGHT - 1)
-	
-	food.position = Global.CELL_SIZE * Vector2(.5 + new_x, .5 + new_y)
+	emit_signal("win")
 
 
 func _on_food_area_entered(area):

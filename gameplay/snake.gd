@@ -11,6 +11,7 @@ var input_queue = []
 signal dead
 signal eat
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	rectangle = RectangleShape2D.new()
@@ -124,7 +125,6 @@ class SnakeSquare extends CollisionShape2D:
 		initial_direction = direction
 		prev = previous
 		update_sprite()
-		
 
 
 	func set_pos(x : int, y : int):

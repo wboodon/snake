@@ -15,6 +15,7 @@ enum {START, GAME_OVER, PLAYING, ANIMATION}
 var state = START
 var music_volume = 10
 var sfx_volume = 10
+var game_speed = 3
 
 
 func _ready():
@@ -29,8 +30,9 @@ func _ready():
 			if file_name.match("*.png"):
 				palette_paths.append(file_name)
 			file_name = dir.get_next()
-	update_palette()
 	
+	update_palette()
+	update_speed()
 	update_volume()
 	
 	get_tree().paused = true
@@ -61,13 +63,16 @@ func _unhandled_input(event):
 func open_start_menu():
 	state = START
 	%StartMenu.visible = true
+	%AnimatedSnake.animate()
+	%StartAnimation.play("fade_in")
+	await %StartAnimation.animation_finished
 	%StartNewGameButton.grab_focus()
-	
+
 
 func open_settings_menu():
 	%SettingsMenu.visible = true
 	%ExitSettingsButton.grab_focus()
-	
+
 
 func close_settings_menu():
 	%SettingsMenu.visible = false
@@ -89,21 +94,14 @@ func new_game():
 	
 	new_grid.score.connect(_on_game_score)
 	new_grid.dead.connect(_on_game_dead)
+	new_grid.win.connect(_on_game_win)
 	
 	score = 0
 	score_text.text = "[left]" + str(score) + "[/left]"
 	
 	hide_gui()
 	in_game_gui.visible = true
-	%CountdownLabel.visible = true
-	state = ANIMATION
-	
-	for i in range(3,0,-1):
-		%CountdownLabel.text = str(i)
-		await get_tree().create_timer(1.0).timeout
-	
-	%CountdownLabel.visible = false
-	state = PLAYING
+	await countdown()
 	get_tree().paused = false
 
 
@@ -115,6 +113,7 @@ func pause():
 
 func resume():
 	hide_gui()
+	await countdown()
 	get_tree().paused = false
 
 
@@ -123,7 +122,7 @@ func hide_gui():
 	%PauseMenu.visible = false
 	%GameOverMenu.visible = false
 	%SettingsMenu.visible = false
-	
+
 
 func update_palette():
 	palette = clampi(palette, 0, palette_paths.size() - 1)
@@ -150,6 +149,28 @@ func update_volume():
 	%SFXIncreaseButton.disabled = sfx_volume == 10
 
 
+func update_speed():
+	game_speed = clampi(game_speed, 1, 5)
+	
+	Engine.time_scale = float (game_speed + 1) / 4.0
+	
+	%SpeedNumberLabel.text = str(game_speed)
+	%SpeedDecreaseButton.disabled = game_speed == 1
+	%SpeedIncreaseButton.disabled = game_speed == 5
+
+
+func countdown():
+	state = ANIMATION
+	%CountdownLabel.visible = true
+	
+	for i in range(3,0,-1):
+		%CountdownLabel.text = str(i)
+		await get_tree().create_timer(1.0).timeout
+	
+	%CountdownLabel.visible = false
+	state = PLAYING
+
+
 func _on_game_score():
 	score += 1
 	score_text.text = "[left]" + str(score) + "[/left]"
@@ -160,6 +181,15 @@ func _on_game_score():
 
 func _on_game_dead():
 	state = GAME_OVER
+	%GameOverLabel.text = "[center]GAME OVER"
+	%GameOverMenu.visible = true
+	%GameOverNewGameButton.grab_focus()
+	get_tree().paused = true
+	
+
+func _on_game_win():
+	state = GAME_OVER
+	%GameOverLabel.text = "[center]HOW!?!"
 	%GameOverMenu.visible = true
 	%GameOverNewGameButton.grab_focus()
 	get_tree().paused = true
@@ -197,3 +227,13 @@ func _on_sfx_decrease_button_pressed():
 func _on_sfx_increase_button_pressed():
 	sfx_volume += 1
 	update_volume()
+
+
+func _on_speed_decrease_button_pressed():
+	game_speed -= 1
+	update_speed()
+
+
+func _on_speed_increase_button_pressed():
+	game_speed += 1
+	update_speed()

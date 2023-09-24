@@ -80,20 +80,13 @@ func _draw():
 		#draw_circle(Vector2(3,-7), 3.0, Global.LIGHT)
 		#draw_circle(Vector2(3,7), 3.0, Global.LIGHT)
 
-	
-
-
-func _ready():
-	animate()
-	
-	
 
 func _process(_delta):
 	queue_redraw()
 
 
 func animate():
-	body_percentage = .35
+	body_percentage = .30
 	points = $SlitherPath.curve.tessellate_even_length(5, 2)
 	state = SLITHER
 	body_color = Global.LIGHTEST

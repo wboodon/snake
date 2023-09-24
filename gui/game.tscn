@@ -12,8 +12,21 @@
 [ext_resource type="Texture2D" uid="uid://djkvvo7gug04s" path="res://gui/theme/tex_button_normal.png" id="8_qedsq"]
 [ext_resource type="Texture2D" uid="uid://clnohryx8ktte" path="res://gui/theme/tex_button_disabled.png" id="9_fabpo"]
 [ext_resource type="Texture2D" uid="uid://bhylsa4n1ib4q" path="res://gui/start_screen/nake.png" id="9_kaalf"]
-[ext_resource type="Texture2D" uid="uid://dxfsncr3hp6jm" path="res://gui/palettes/5.png" id="9_v7xn7"]
 [ext_resource type="Texture2D" uid="uid://cvrqpukkprlb0" path="res://gui/theme/tex_button_focus.png" id="10_li0bs"]
+[ext_resource type="Texture2D" uid="uid://bqjwxdejglpiw" path="res://gui/palettes/18.png" id="14_bp1tu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vvj6u"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0)
+corner_detail = 1
+anti_aliasing = false
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yn6n4"]
 content_margin_left = 8.0
@@ -25,19 +38,6 @@ texture_margin_right = 8.0
 texture_margin_bottom = 8.0
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vvj6u"]
-content_margin_left = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.333333, 0.333333, 0.333333, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 1)
-corner_detail = 1
-anti_aliasing = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8yx80"]
 shader = ExtResource("5_1v56d")
@@ -135,7 +135,7 @@ _data = {
 shader = ExtResource("1_q1yve")
 shader_parameter/baseline_alpha = 0.1
 shader_parameter/invert = false
-shader_parameter/palette = ExtResource("9_v7xn7")
+shader_parameter/palette = ExtResource("14_bp1tu")
 
 [node name="Game" type="Node2D"]
 process_mode = 3
@@ -220,6 +220,22 @@ text = "[right]record[/right]"
 fit_content = true
 autowrap_mode = 0
 
+[node name="CountdownLabel" type="RichTextLabel" parent="InGameGUI"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 70.0
+offset_top = -4.0
+offset_right = 90.0
+offset_bottom = 20.0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_fonts/normal_font = ExtResource("5_sgn86")
+theme_override_font_sizes/normal_font_size = 21
+theme_override_styles/normal = SubResource("StyleBoxFlat_vvj6u")
+text = "3"
+fit_content = true
+autowrap_mode = 0
+
 [node name="PanelContainer" type="PanelContainer" parent="InGameGUI"]
 layout_mode = 2
 offset_top = 16.0
@@ -240,18 +256,6 @@ unique_name_in_owner = true
 handle_input_locally = false
 size = Vector2i(144, 112)
 render_target_update_mode = 4
-
-[node name="CountdownLabel" type="RichTextLabel" parent="InGameGUI/PanelContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_fonts/normal_font = ExtResource("5_sgn86")
-theme_override_font_sizes/normal_font_size = 21
-theme_override_styles/normal = SubResource("StyleBoxFlat_vvj6u")
-text = "3"
-fit_content = true
-autowrap_mode = 0
 
 [node name="PauseMenu" type="Control" parent="."]
 unique_name_in_owner = true
@@ -333,6 +337,7 @@ offset_right = 136.0
 offset_bottom = 96.0
 
 [node name="GameOverLabel" type="RichTextLabel" parent="GameOverMenu"]
+unique_name_in_owner = true
 layout_mode = 2
 offset_left = 16.0
 offset_top = 24.0
@@ -369,6 +374,7 @@ text = "quit"
 [node name="StartMenu" type="Control" parent="."]
 unique_name_in_owner = true
 process_mode = 2
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -427,6 +433,7 @@ size_flags_vertical = 6
 text = "quit"
 
 [node name="AnimatedSnake" parent="StartMenu" instance=ExtResource("6_fxmbh")]
+unique_name_in_owner = true
 position = Vector2(48, 56)
 
 [node name="FadeIn" type="ColorRect" parent="StartMenu"]
@@ -442,7 +449,8 @@ offset_right = 160.0
 offset_bottom = 16.0
 color = Color(0, 0, 0, 1)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="StartMenu"]
+[node name="StartAnimation" type="AnimationPlayer" parent="StartMenu"]
+unique_name_in_owner = true
 autoplay = "fade_in"
 libraries = {
 "": SubResource("AnimationLibrary_hu3po")
@@ -451,7 +459,6 @@ libraries = {
 [node name="SettingsMenu" type="Control" parent="."]
 unique_name_in_owner = true
 process_mode = 2
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 160.0
@@ -620,6 +627,51 @@ texture_pressed = ExtResource("8_qedsq")
 texture_disabled = ExtResource("9_fabpo")
 texture_focused = ExtResource("10_li0bs")
 
+[node name="RichTextLabel5" type="RichTextLabel" parent="SettingsMenu/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+text = "game speed"
+fit_content = true
+autowrap_mode = 0
+
+[node name="SpeedAdjuster" type="HBoxContainer" parent="SettingsMenu/GridContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="SpeedDecreaseButton" type="TextureButton" parent="SettingsMenu/GridContainer/SpeedAdjuster"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_right = NodePath("../SpeedIncreaseButton")
+button_mask = 0
+texture_normal = ExtResource("8_qedsq")
+texture_pressed = ExtResource("8_qedsq")
+texture_disabled = ExtResource("9_fabpo")
+texture_focused = ExtResource("10_li0bs")
+flip_h = true
+
+[node name="SpeedNumberLabel" type="RichTextLabel" parent="SettingsMenu/GridContainer/SpeedAdjuster"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+bbcode_enabled = true
+text = "1"
+fit_content = true
+autowrap_mode = 0
+
+[node name="SpeedIncreaseButton" type="TextureButton" parent="SettingsMenu/GridContainer/SpeedAdjuster"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../SpeedDecreaseButton")
+texture_normal = ExtResource("8_qedsq")
+texture_pressed = ExtResource("8_qedsq")
+texture_disabled = ExtResource("9_fabpo")
+texture_focused = ExtResource("10_li0bs")
+
 [node name="Control" type="Control" parent="SettingsMenu/GridContainer"]
 layout_mode = 2
 
@@ -638,6 +690,9 @@ offset_right = 160.0
 offset_bottom = 144.0
 color = Color(1, 1, 1, 0)
 
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
+bus = &"Music"
+
 [connection signal="pressed" from="SettingsMenu/GridContainer/PaletteAdjuster/PaletteDecreaseButton" to="." method="_on_palette_decrease_button_pressed"]
 [connection signal="pressed" from="SettingsMenu/GridContainer/PaletteAdjuster/PaletteIncreaseButton" to="." method="_on_palette_increase_button_pressed"]
 [connection signal="toggled" from="SettingsMenu/GridContainer/InvertCheckBox" to="." method="_on_check_box_toggled"]
@@ -645,4 +700,6 @@ color = Color(1, 1, 1, 0)
 [connection signal="pressed" from="SettingsMenu/GridContainer/MusicAduster/MusicIncreaseButton" to="." method="_on_music_increase_button_pressed"]
 [connection signal="pressed" from="SettingsMenu/GridContainer/SFXAdjuster/SFXDecreaseButton" to="." method="_on_sfx_decrease_button_pressed"]
 [connection signal="pressed" from="SettingsMenu/GridContainer/SFXAdjuster/SFXIncreaseButton" to="." method="_on_sfx_increase_button_pressed"]
+[connection signal="pressed" from="SettingsMenu/GridContainer/SpeedAdjuster/SpeedDecreaseButton" to="." method="_on_speed_decrease_button_pressed"]
+[connection signal="pressed" from="SettingsMenu/GridContainer/SpeedAdjuster/SpeedIncreaseButton" to="." method="_on_speed_increase_button_pressed"]
 [connection signal="pressed" from="SettingsMenu/GridContainer/ExitSettingsButton" to="." method="close_settings_menu"]
