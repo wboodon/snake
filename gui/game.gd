@@ -16,6 +16,9 @@ var state = START
 var music_volume = 10
 var sfx_volume = 10
 var game_speed = 3
+var play_focus_sound = false
+var first_startup = true
+var ingame_music_start_pos = 0.0
 
 
 func _ready():
@@ -37,7 +40,11 @@ func _ready():
 	
 	get_tree().paused = true
 	
-	%StartNewGameButton.pressed.connect(new_game)
+	var children = get_all_descendants(self).filter(func(child): return child is BaseButton)
+	for child in children:
+		child.focus_entered.connect(_on_button_focus_entered)
+	
+	%StartNewGameButton.pressed.connect(new_game_from_start)
 	%PauseNewGameButton.pressed.connect(new_game)
 	%GameOverNewGameButton.pressed.connect(new_game)
 	%ResumeButton.pressed.connect(resume)
@@ -60,22 +67,45 @@ func _unhandled_input(event):
 		new_game()
 
 
+func get_all_descendants(node : Node) -> Array:
+	var descendants = [node]
+	for child in node.get_children():
+		descendants += get_all_descendants(child)
+	return descendants
+
+
 func open_start_menu():
 	state = START
+	
 	%StartMenu.visible = true
+	%InGameMusicPlayer.stop()
+	if first_startup:
+		first_startup = false
+	else:
+		%SelectSoundPlayer.play()
+	%StartSFXPlayer.play()
+	
 	%AnimatedSnake.animate()
 	%StartAnimation.play("fade_in")
+	
 	await %StartAnimation.animation_finished
+	
+	%StartMusicPlayer.play()
+	play_focus_sound = false
 	%StartNewGameButton.grab_focus()
 
 
 func open_settings_menu():
+	%SelectSoundPlayer.play()
 	%SettingsMenu.visible = true
+	play_focus_sound = false
 	%ExitSettingsButton.grab_focus()
 
 
 func close_settings_menu():
+	%ExitSoundPlayer.play()
 	%SettingsMenu.visible = false
+	play_focus_sound = false
 	match state:
 		START:
 			%StartNewGameButton.grab_focus()
@@ -83,6 +113,13 @@ func close_settings_menu():
 			%GameOverNewGameButton.grab_focus()
 		PLAYING:
 			%ResumeButton.grab_focus()
+
+
+func new_game_from_start():
+	ingame_music_start_pos = 0.0
+	%SelectSoundPlayer.play()
+	%StartMusicPlayer.stop()
+	await new_game()
 
 
 func new_game():
@@ -102,18 +139,28 @@ func new_game():
 	hide_gui()
 	in_game_gui.visible = true
 	await countdown()
+	
+	%InGameMusicPlayer.play(ingame_music_start_pos)
 	get_tree().paused = false
 
 
 func pause():
+	%SelectSoundPlayer.play()
 	get_tree().paused = true
 	%PauseMenu.visible = true
+	play_focus_sound = false
 	%ResumeButton.grab_focus()
 
 
 func resume():
+	%ExitSoundPlayer.play()
+	ingame_music_start_pos = %InGameMusicPlayer.get_playback_position()
+	%InGameMusicPlayer.stop()
 	hide_gui()
+	
 	await countdown()
+	
+	%InGameMusicPlayer.play(ingame_music_start_pos)
 	get_tree().paused = false
 
 
@@ -162,13 +209,24 @@ func update_speed():
 func countdown():
 	state = ANIMATION
 	%CountdownLabel.visible = true
+	%CountdownPlayer.play()
 	
 	for i in range(3,0,-1):
 		%CountdownLabel.text = str(i)
 		await get_tree().create_timer(1.0).timeout
 	
+	%CountdownLabel.text = "GO"
+	await get_tree().create_timer(1.0).timeout
+	
 	%CountdownLabel.visible = false
 	state = PLAYING
+
+
+func _on_button_focus_entered():
+	if play_focus_sound:
+		%FocusSoundPlayer.play()
+	else:
+		play_focus_sound = true
 
 
 func _on_game_score():
@@ -181,59 +239,80 @@ func _on_game_score():
 
 func _on_game_dead():
 	state = GAME_OVER
+	
+	ingame_music_start_pos = %InGameMusicPlayer.get_playback_position()
+	%InGameMusicPlayer.stop()
+	%GameOverMusicPlayer.play()
+	
 	%GameOverLabel.text = "[center]GAME OVER"
 	%GameOverMenu.visible = true
+	play_focus_sound = false
 	%GameOverNewGameButton.grab_focus()
 	get_tree().paused = true
 	
 
 func _on_game_win():
 	state = GAME_OVER
+	
+	ingame_music_start_pos = %InGameMusicPlayer.get_playback_position()
+	%InGameMusicPlayer.stop()
+	%GameOverMusicPlayer.play()
+	
 	%GameOverLabel.text = "[center]HOW!?!"
 	%GameOverMenu.visible = true
+	play_focus_sound = false
 	%GameOverNewGameButton.grab_focus()
 	get_tree().paused = true
 
 
 func _on_palette_decrease_button_pressed():
+	%DecreaseSoundPlayer.play()
 	palette -= 1
 	update_palette()
 
 
 func _on_palette_increase_button_pressed():
+	%IncreaseSoundPlayer.play()
 	palette += 1
 	update_palette()
 
 
 func _on_check_box_toggled(button_pressed):
+	(%IncreaseSoundPlayer if button_pressed else %DecreaseSoundPlayer).play()
 	palette_shader.set("shader_parameter/invert", button_pressed)
 
 
 func _on_music_decrease_button_pressed():
+	%DecreaseSoundPlayer.play()
 	music_volume -= 1
 	update_volume()
 
 
 func _on_music_increase_button_pressed():
+	%IncreaseSoundPlayer.play()
 	music_volume += 1
 	update_volume()
 
 
 func _on_sfx_decrease_button_pressed():
+	%DecreaseSoundPlayer.play()
 	sfx_volume -= 1
 	update_volume()
 
 
 func _on_sfx_increase_button_pressed():
+	%IncreaseSoundPlayer.play()
 	sfx_volume += 1
 	update_volume()
 
 
 func _on_speed_decrease_button_pressed():
+	%DecreaseSoundPlayer.play()
 	game_speed -= 1
 	update_speed()
 
 
 func _on_speed_increase_button_pressed():
+	%IncreaseSoundPlayer.play()
 	game_speed += 1
 	update_speed()

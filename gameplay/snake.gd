@@ -4,6 +4,8 @@ var rectangle : RectangleShape2D
 var head : SnakeSquare
 var tail : SnakeSquare
 @onready var head_hitbox = $Head
+@onready var eat_sound_player : AudioStreamPlayer = $EatSoundPlayer
+@onready var turn_sound_player : AudioStreamPlayer = $TurnSoundPlayer
 enum {UP, DOWN, LEFT, RIGHT}
 var direction = UP
 var grow_next_move = true
@@ -47,7 +49,9 @@ func _on_timer_timeout():
 			next_direction = input
 		elif (input == LEFT or input == RIGHT) and (direction == UP or direction == DOWN):
 			next_direction = input
-	direction = next_direction if next_direction != -1 else direction
+	if next_direction != -1:
+		direction = next_direction
+		turn_sound_player.play()
 	
 	# move the snake and add a new square if needed
 	var new_x = head.pos.x
@@ -92,6 +96,7 @@ func _on_head_area_entered(area):
 		emit_signal("dead")
 	elif area.is_in_group("food"):
 		grow_next_move = true
+		eat_sound_player.play()
 		emit_signal("eat")
 
 

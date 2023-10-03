@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dlfq34h176xw1"]
+[gd_scene load_steps=32 format=3 uid="uid://dlfq34h176xw1"]
 
 [ext_resource type="Script" path="res://gui/game.gd" id="1_5itbe"]
 [ext_resource type="Shader" path="res://gui/palette_swap_2.gdshader" id="1_q1yve"]
@@ -6,14 +6,24 @@
 [ext_resource type="Texture2D" uid="uid://cf3frhqocbe2r" path="res://gui/theme/grid_border.png" id="3_sbjq2"]
 [ext_resource type="Theme" uid="uid://buqgb4lyf7xxf" path="res://gui/theme/game_gui.tres" id="4_fctqf"]
 [ext_resource type="Shader" path="res://gui/start_screen/ripple.gdshader" id="5_1v56d"]
+[ext_resource type="AudioStream" uid="uid://bqd04mkkc3ruy" path="res://gui/music.wav" id="5_p6n3a"]
 [ext_resource type="FontFile" uid="uid://bh6wa32yo0mj5" path="res://gui/theme/VCR_OSD_MONO.ttf" id="5_sgn86"]
 [ext_resource type="PackedScene" uid="uid://by8mbw6ktpor4" path="res://gui/start_screen/animated_snake.tscn" id="6_fxmbh"]
+[ext_resource type="AudioStream" uid="uid://yr8dcdqltkth" path="res://gui/countdown.wav" id="6_mbuu0"]
 [ext_resource type="Texture2D" uid="uid://lfnbtt7f2qsv" path="res://gui/start_screen/melo_toni_presents.png" id="6_sad4r"]
+[ext_resource type="AudioStream" uid="uid://d4i7nekxxyeh4" path="res://gui/game_over.wav" id="8_6lm63"]
 [ext_resource type="Texture2D" uid="uid://djkvvo7gug04s" path="res://gui/theme/tex_button_normal.png" id="8_qedsq"]
 [ext_resource type="Texture2D" uid="uid://clnohryx8ktte" path="res://gui/theme/tex_button_disabled.png" id="9_fabpo"]
 [ext_resource type="Texture2D" uid="uid://bhylsa4n1ib4q" path="res://gui/start_screen/nake.png" id="9_kaalf"]
+[ext_resource type="AudioStream" uid="uid://bi78f0wygwxbv" path="res://gui/start_screen/start_sfx.wav" id="10_dedld"]
 [ext_resource type="Texture2D" uid="uid://cvrqpukkprlb0" path="res://gui/theme/tex_button_focus.png" id="10_li0bs"]
+[ext_resource type="AudioStream" uid="uid://n3sa6a4fp6ne" path="res://gui/start_screen/start_music.wav" id="11_8wk6b"]
 [ext_resource type="Texture2D" uid="uid://bqjwxdejglpiw" path="res://gui/palettes/18.png" id="14_bp1tu"]
+[ext_resource type="AudioStream" uid="uid://cxyee8lssuvct" path="res://gui/menu_focus.wav" id="19_maqun"]
+[ext_resource type="AudioStream" uid="uid://4a1tgnxnrbyy" path="res://gui/menu_increase.wav" id="20_knkxg"]
+[ext_resource type="AudioStream" uid="uid://b7j4qsximwyer" path="res://gui/menu_decrease.wav" id="21_8e3nx"]
+[ext_resource type="AudioStream" uid="uid://dh5qj75ck1m0x" path="res://gui/menu_select.wav" id="22_5x2sy"]
+[ext_resource type="AudioStream" uid="uid://osusb1qqqa0y" path="res://gui/menu_exit.wav" id="23_nuvkv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vvj6u"]
 content_margin_left = 4.0
@@ -86,7 +96,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_mbweu"]
 resource_name = "fade_in"
-length = 6.0
+length = 8.0
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -95,7 +105,7 @@ tracks/0/path = NodePath("FadeIn:color")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1.5, 1.6, 3.5, 4),
+"times": PackedFloat32Array(0, 1.5, 1.6, 4.5, 5),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
 "values": [Color(0, 0, 0, 0.580392), Color(0, 0, 0, 0.580392), Color(0, 0, 0, 1), Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
@@ -107,7 +117,7 @@ tracks/1/path = NodePath("VBoxContainer:position")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 4.5, 6),
+"times": PackedFloat32Array(0, 6, 7.5),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector2(32, 144), Vector2(32, 144), Vector2(32, 96)]
@@ -119,7 +129,7 @@ tracks/2/path = NodePath("FadeIn2:color")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 2.5, 3),
+"times": PackedFloat32Array(0, 1.6, 2.1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Color(0, 0, 0, 1), Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
@@ -257,6 +267,16 @@ handle_input_locally = false
 size = Vector2i(144, 112)
 render_target_update_mode = 4
 
+[node name="InGameMusicPlayer" type="AudioStreamPlayer" parent="InGameGUI"]
+unique_name_in_owner = true
+stream = ExtResource("5_p6n3a")
+bus = &"Music"
+
+[node name="CountdownPlayer" type="AudioStreamPlayer" parent="InGameGUI"]
+unique_name_in_owner = true
+stream = ExtResource("6_mbuu0")
+bus = &"Music"
+
 [node name="PauseMenu" type="Control" parent="."]
 unique_name_in_owner = true
 process_mode = 2
@@ -371,6 +391,11 @@ layout_mode = 2
 size_flags_vertical = 4
 text = "quit"
 
+[node name="GameOverMusicPlayer" type="AudioStreamPlayer" parent="GameOverMenu"]
+unique_name_in_owner = true
+stream = ExtResource("8_6lm63")
+bus = &"Music"
+
 [node name="StartMenu" type="Control" parent="."]
 unique_name_in_owner = true
 process_mode = 2
@@ -455,6 +480,16 @@ autoplay = "fade_in"
 libraries = {
 "": SubResource("AnimationLibrary_hu3po")
 }
+
+[node name="StartSFXPlayer" type="AudioStreamPlayer" parent="StartMenu"]
+unique_name_in_owner = true
+stream = ExtResource("10_dedld")
+bus = &"Music"
+
+[node name="StartMusicPlayer" type="AudioStreamPlayer" parent="StartMenu"]
+unique_name_in_owner = true
+stream = ExtResource("11_8wk6b")
+bus = &"Music"
 
 [node name="SettingsMenu" type="Control" parent="."]
 unique_name_in_owner = true
@@ -690,8 +725,32 @@ offset_right = 160.0
 offset_bottom = 144.0
 color = Color(1, 1, 1, 0)
 
-[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
-bus = &"Music"
+[node name="GUIAudioStreams" type="Node" parent="."]
+
+[node name="FocusSoundPlayer" type="AudioStreamPlayer" parent="GUIAudioStreams"]
+unique_name_in_owner = true
+stream = ExtResource("19_maqun")
+bus = &"SFX"
+
+[node name="IncreaseSoundPlayer" type="AudioStreamPlayer" parent="GUIAudioStreams"]
+unique_name_in_owner = true
+stream = ExtResource("20_knkxg")
+bus = &"SFX"
+
+[node name="DecreaseSoundPlayer" type="AudioStreamPlayer" parent="GUIAudioStreams"]
+unique_name_in_owner = true
+stream = ExtResource("21_8e3nx")
+bus = &"SFX"
+
+[node name="SelectSoundPlayer" type="AudioStreamPlayer" parent="GUIAudioStreams"]
+unique_name_in_owner = true
+stream = ExtResource("22_5x2sy")
+bus = &"SFX"
+
+[node name="ExitSoundPlayer" type="AudioStreamPlayer" parent="GUIAudioStreams"]
+unique_name_in_owner = true
+stream = ExtResource("23_nuvkv")
+bus = &"SFX"
 
 [connection signal="pressed" from="SettingsMenu/GridContainer/PaletteAdjuster/PaletteDecreaseButton" to="." method="_on_palette_decrease_button_pressed"]
 [connection signal="pressed" from="SettingsMenu/GridContainer/PaletteAdjuster/PaletteIncreaseButton" to="." method="_on_palette_increase_button_pressed"]
