@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://dgedwwd46vwdo"]
+[gd_scene load_steps=4 format=3 uid="uid://dgedwwd46vwdo"]
 
 [ext_resource type="Script" path="res://gameplay/grid.gd" id="1_l5njn"]
 [ext_resource type="PackedScene" uid="uid://xavarq63temb" path="res://gameplay/snake.tscn" id="2_xvhn3"]
 [ext_resource type="PackedScene" uid="uid://emvh086k2cm4" path="res://gameplay/food.tscn" id="3_bj2rr"]
-[ext_resource type="Script" path="res://gameplay/grid_lines.gd" id="4_tywii"]
 
 [node name="Grid" type="Node2D"]
 script = ExtResource("1_l5njn")
@@ -16,12 +15,6 @@ color = Color(0, 0, 0, 1)
 [node name="Border" type="Area2D" parent="." groups=["border"]]
 collision_layer = 4
 collision_mask = 0
-
-[node name="GridLines" type="Control" parent="."]
-visible = false
-layout_mode = 3
-anchors_preset = 0
-script = ExtResource("4_tywii")
 
 [node name="Food" parent="." instance=ExtResource("3_bj2rr")]
 
