@@ -13,8 +13,8 @@ extends Node2D
 var grid_scene = preload("res://gameplay/grid.tscn")
 var score : int = 0
 var palette = 0
-enum {START, GAME_OVER, PLAYING, ANIMATION}
-var state = START
+enum {START, GAME_OVER, PLAYING, ANIMATION, USER_GESTURE}
+var state = USER_GESTURE
 var music_volume = 10
 var sfx_volume = 10
 var game_speed = 3
@@ -57,7 +57,7 @@ func _ready():
 	%StartSettingsButton.pressed.connect(open_settings_menu)
 	%PauseSettingsButton.pressed.connect(open_settings_menu)
 	
-	open_start_menu()
+	#open_start_menu()
 
 
 func _unhandled_input(event):
@@ -68,6 +68,10 @@ func _unhandled_input(event):
 			pause()
 	elif event.is_action_pressed("restart"):
 		new_game()
+	elif state == USER_GESTURE:
+		state = START
+		$UserGestureSplash.hide()
+		open_start_menu()
 
 
 func get_all_descendants(node : Node) -> Array:

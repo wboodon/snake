@@ -495,7 +495,6 @@ color = Color(0, 0, 0, 1)
 
 [node name="StartAnimation" type="AnimationPlayer" parent="StartMenu"]
 unique_name_in_owner = true
-autoplay = "fade_in"
 libraries = {
 "": SubResource("AnimationLibrary_hu3po")
 }
@@ -513,6 +512,7 @@ bus = &"Music"
 [node name="SettingsMenu" type="Control" parent="."]
 unique_name_in_owner = true
 process_mode = 2
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 160.0
@@ -733,6 +733,28 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 text = " exit"
+
+[node name="UserGestureSplash" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect" type="ColorRect" parent="UserGestureSplash"]
+layout_mode = 0
+offset_right = 160.0
+offset_bottom = 144.0
+color = Color(0, 0, 0, 1)
+
+[node name="SplashText" type="RichTextLabel" parent="UserGestureSplash"]
+offset_top = 67.0
+offset_right = 160.0
+offset_bottom = 80.0
+theme_override_fonts/normal_font = ExtResource("2_sxpjs")
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+text = "[center]press space to start"
+fit_content = true
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="."]
 copy_mode = 2
