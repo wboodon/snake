@@ -5,8 +5,10 @@ extends Node2D
 @onready var score_text = %ScoreText
 @onready var record_text = %RecordText
 @onready var in_game_gui = %InGameGUI
-@onready var palette_paths = []
+#@onready var palette_paths = []
 @onready var palette_shader : ShaderMaterial = %PaletteSwapper.get("material")
+
+@export var palettes : Array[CompressedTexture2D]
 
 var grid_scene = preload("res://gameplay/grid.tscn")
 var score : int = 0
@@ -25,14 +27,15 @@ func _ready():
 	
 	hide_gui()
 	
-	var dir = DirAccess.open("res://gui/palettes")
-	if dir:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			if file_name.match("*.png"):
-				palette_paths.append(file_name)
-			file_name = dir.get_next()
+	# this doesn't work when the project is exported
+	#var dir = DirAccess.open("res://gui/palettes")
+	#if dir:
+	#	dir.list_dir_begin()
+	#	var file_name = dir.get_next()
+	#	while file_name != "":
+	#		if file_name.match("*.png"):
+	#			palette_paths.append(file_name)
+	#		file_name = dir.get_next()
 	
 	update_palette()
 	update_speed()
@@ -172,12 +175,17 @@ func hide_gui():
 
 
 func update_palette():
-	palette = clampi(palette, 0, palette_paths.size() - 1)
+	# had to deprecate this bc it wouldn't work when exported :pensive:
+	#palette = clampi(palette, 0, palette_paths.size() - 1)
+	#%PaletteNumberLabel.text = str(palette).pad_zeros(2)
+	#palette_shader.set("shader_parameter/palette", load("res://gui/palettes/" + palette_paths[palette]))
+	
+	palette = clampi(palette, 0, palettes.size() - 1)
 	%PaletteNumberLabel.text = str(palette).pad_zeros(2)
-	palette_shader.set("shader_parameter/palette", load("res://gui/palettes/" + palette_paths[palette]))
+	palette_shader.set("shader_parameter/palette", palettes[palette])
 	
 	%PaletteDecreaseButton.disabled = (palette == 0)
-	%PaletteIncreaseButton.disabled = (palette == palette_paths.size() - 1)
+	%PaletteIncreaseButton.disabled = (palette == palettes.size() - 1)
 
 
 func update_volume():
